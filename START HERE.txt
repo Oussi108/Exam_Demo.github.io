@@ -1,0 +1,27 @@
+GETHSK · HSK 2.0 LEVEL 3 EXAM DEMO
+
+1. Extract the whole ZIP to a normal folder. Do not open index.html from
+   inside the ZIP, and keep the assets folder beside it.
+2. Open index.html in a recent browser. No sign-in, installation, internet,
+   or GetHSK server is needed.
+3. Choose one of the five papers. Timed mode has an 85-minute countdown and
+   one playback of each listening recording. Learning mode offers unlimited
+   replays, slower audio, transcripts, pinyin, and answer checks.
+4. Finish for a raw practice score and review. To send feedback, open
+   Give feedback, write your notes, and download the text file. Send it back
+   to the person who shared the demo. If the download is blocked, copy the
+   note that appears below it. Nothing is uploaded automatically.
+
+Useful feedback: paper and question number, unclear instructions, audio
+quality, whether the keyed answer makes sense, and anything awkward on your
+screen. Please leave out passwords and other personal details.
+
+Progress is local to this browser and folder when browser storage is
+available. If the page says progress is kept only while the tab is open,
+keep that tab open until you finish. The timed countdown does not pause when
+you leave the player. Retaking replaces the saved result for that paper and
+mode after confirmation.
+
+These original GetHSK draft practice papers are provided for feedback.
+They are not official HSK papers and results are not official HSK scores.
+Recordings and answer keys are bundled for offline use and review.

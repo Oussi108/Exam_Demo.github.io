@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light">
+  <title>GetHSK · Level 3 Exam Demo</title>
+  <link rel="icon" href="assets/dragon.png">
+  <link rel="stylesheet" href="assets/app.css">
+  <link rel="stylesheet" href="assets/exam.css">
+  <link rel="stylesheet" href="assets/exam-interactions.css">
+  <link rel="stylesheet" href="assets/exam-hsk2.css">
+  <link rel="stylesheet" href="assets/interface.css">
+  <link rel="stylesheet" href="demo.css?v=2">
+  <script defer src="assets/papers.js"></script>
+  <script defer src="demo.js?v=3"></script>
+</head>
+<body class="hsk2-theme">
+  <div id="demo"></div>
+  <noscript><p class="demo-catalogue">Enable JavaScript to use the offline exam player.</p></noscript>
+  <dialog id="word-dialog" aria-labelledby="word-title">
+    <form method="dialog"><button class="demo-close" aria-label="Close">×</button></form>
+    <h2 id="word-title" lang="zh-Hans"></h2><p id="word-pinyin"></p><p id="word-meaning"></p>
+  </dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <form method="dialog">
+      <h2 id="confirm-title">Finish this paper?</h2>
+      <p id="confirm-copy"></p>
+      <div class="demo-actions"><button class="button ghost" value="cancel" autofocus>Keep working</button><button class="button primary" value="finish">Show results</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

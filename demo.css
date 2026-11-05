@@ -1,0 +1,80 @@
+/* The original GetHSK HSK 2.0 styles are bundled alongside this offline adapter. */
+body{font-family:system-ui,"Segoe UI","Microsoft YaHei",sans-serif}
+[hidden]{display:none!important}
+button,select{font:inherit}
+button:disabled{cursor:not-allowed;opacity:.55}
+:focus-visible{outline:2px solid #60418c;outline-offset:3px}
+.hsk-topbar :focus-visible,.listening-player :focus-visible{outline-color:#e4c9f1}
+.demo-catalogue{width:min(1080px,100%);margin:auto;padding:clamp(20px,5vw,54px) clamp(16px,4vw,38px)}
+.demo-brand{display:inline-flex;align-items:center;gap:10px;font-size:21px;font-weight:750;color:#234a3d}
+.demo-brand img{width:44px;height:44px;object-fit:contain}
+.demo-hero{padding-block:20px 24px;border-bottom:1px solid var(--line);margin-block-end:24px}
+.demo-hero h1{font-size:clamp(30px,5vw,49px);line-height:1.1;letter-spacing:-.035em;margin:.35em 0}
+.demo-hero p{max-width:68ch}
+.demo-eyebrow{font-size:13px;color:var(--muted);font-weight:600}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:14px}
+.demo-card{display:flex;flex-direction:column;justify-content:space-between;gap:14px;padding:20px;background:#fff;border:1px solid var(--line);border-block-start:3px solid #8961b3;border-radius:12px}
+.demo-card h2{font-size:21px;margin:0}
+.demo-card p{font-size:14px;color:var(--muted);margin:8px 0}
+.demo-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.demo-actions .button{font-size:13px;padding:9px 12px}
+.demo-actions .button.primary{color:#fff}
+.demo-note{font-size:13px;color:var(--muted)}
+.demo-help{padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-block:18px}
+.demo-help summary{cursor:pointer;font-weight:650;padding-block:6px}
+.demo-feedback{width:100%;min-height:112px;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit;resize:vertical}
+.demo-exam .hsk-topbar{height:auto;min-height:78px;grid-template-columns:auto minmax(0,1fr) auto auto;gap:clamp(8px,2vw,25px);padding:12px clamp(12px,3vw,36px)}
+.demo-exam .hsk-topbar .button{color:#fff;border-color:#977daf;padding:8px 11px;white-space:nowrap;font-size:13px}
+.demo-exam .hsk-topbar .button:hover{background:#4d3772}
+.demo-exam .hsk-paper-title strong{white-space:normal}
+.demo-exam .hsk-layout{max-width:1300px;margin:auto}
+.demo-exam .hsk-workspace{min-width:0}
+.demo-exam .hsk-sidebar{align-self:start}
+.demo-exam .hsk-question-page{display:block;min-height:unset}
+.demo-exam .question-kicker{gap:12px;flex-wrap:wrap}
+.demo-exam .hsk-question-page h1{font-size:clamp(20px,3vw,30px);line-height:1.45;white-space:pre-line}
+.demo-exam .question-palette{grid-template-columns:repeat(8,minmax(0,1fr))}
+.demo-exam .question-palette button{min-width:0;padding:0;height:33px}
+.demo-exam .question-palette .flagged{box-shadow:inset 0 -3px #a16d19}
+.demo-exam .listening-player{margin-block:12px 20px}
+.demo-exam .audio-play{font-size:20px;flex:0 0 48px;width:48px;height:48px}
+.demo-exam .audio-wave{pointer-events:none}
+.demo-exam .hsk-choices{margin-block:18px}
+.demo-exam .hsk-choices label{padding:8px;overflow-wrap:anywhere}
+.demo-exam .hsk-choices img,.demo-stimulus{display:block;max-width:100%;max-height:340px;object-fit:contain;margin:8px auto}
+.demo-exam .hsk-choices label:has(input:focus-visible){outline:2px solid #60418c;outline-offset:3px}
+.demo-exam .hsk-controls{flex-wrap:wrap;gap:10px}
+.demo-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px clamp(12px,3vw,36px);background:#edf4e7;border-bottom:1px solid #d4dfd1;font-size:13px}
+.demo-tools label{display:flex;align-items:center;gap:5px;min-height:32px}
+.demo-tools select,.demo-input{border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;color:var(--ink);font:inherit}
+.demo-input{width:100%;font-size:18px;min-height:44px}
+.demo-chinese{white-space:pre-line;line-height:1.8;overflow-wrap:anywhere}
+.demo-pinyin{display:none;color:#6b478c;font-size:.8em;line-height:1.6}
+.with-pinyin .demo-pinyin{display:block}
+.demo-lookup{display:inline;border:0;border-bottom:1px dotted #7650a6;padding:0;color:inherit;background:none;font:inherit;cursor:pointer}
+.demo-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-block:12px}
+.demo-board figure{margin:0;border:1px solid var(--line);background:white;border-radius:8px;overflow:hidden}
+.demo-board img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.demo-board figcaption{padding:5px 8px;font-size:13px}
+.demo-board .sample{background:#f1edf6}
+.demo-tiles{display:flex;gap:8px;flex-wrap:wrap;margin-block:12px}
+.demo-tiles button{font-size:17px}
+.demo-order{min-height:54px;background:#f6f2fa;padding:10px;border-radius:8px}
+.demo-review{margin-top:16px;padding:14px 16px;border-inline-start:3px solid #8961b3;background:#f6f2fa;border-radius:6px}
+.demo-review p{margin:5px 0}
+.demo-review[data-correct="true"]{background:#edf4e7;border-color:#49805c}
+.demo-result{margin-block:20px}
+dialog{width:min(440px,calc(100% - 24px));border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--ink);background:white}
+dialog::backdrop{background:#30204b66}
+dialog h2{margin-block-start:0}
+.demo-close{float:right;border:0;background:none;font-size:24px}
+@media(max-width:700px){
+  .demo-exam .hsk-topbar{grid-template-columns:auto minmax(0,1fr) auto}
+  .demo-exam .hsk-progress-copy{grid-column:2;grid-row:2;display:block}
+  .demo-exam .hsk-timer{grid-column:3;grid-row:1 / span 2}
+  .demo-exam .hsk-layout{display:block;padding:10px}
+  .demo-exam .hsk-sidebar{max-height:192px;overflow:auto;margin-block-end:12px}
+  .demo-exam .hsk-question-page{padding:18px}
+  .demo-exam .hsk-choices{grid-template-columns:1fr}
+  .demo-exam .hsk-controls{padding:12px}
+}

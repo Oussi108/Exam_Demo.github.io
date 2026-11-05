@@ -1,0 +1,23 @@
+/* Violet is the HSK 2.0 identity; HSK 3.0 uses leaf green in exam-hsk3.css. */
+body.hsk2-theme{--ink:#30204b;--ink2:#4d3772;--paper:#f6f2fa;--cream:#fdfaff;--lime:#e4c9f1;--coral:#7650a6;--muted:#706781;--line:#e1d9e9;--soft:#eee7f3;background:var(--paper)}
+body.hsk2-theme .button.primary{background:#60418c;border-color:#60418c}
+body.hsk2-theme .page-heading h1 em,body.hsk2-theme .hsk-level-hero h1 em,body.hsk2-theme h2 em{color:#7650a6}
+body.hsk2-theme .hsk-level-card{border-top:4px solid #8961b3;box-shadow:0 8px 24px rgba(48,32,75,.07)}
+body.hsk2-theme .hsk-level-number{background:#60418c;color:#f4eafa}
+body.hsk2-theme .hsk-level-state.ready{background:#eee4f6;color:#543879}
+body.hsk2-theme .hsk-level-hero{border-left:6px solid #8961b3}
+body.hsk2-theme .hsk-exercise-choice:hover,body.hsk2-theme .hsk-exercise-choice:focus-visible{border-color:#8961b3;background:#f5eff9;outline-color:#d8c5e8}
+body.hsk2-theme .hsk-exercise-choice{border-color:#ddd2e8}
+body.hsk2-theme .hsk-draft-preview-note{background:#f2e8f8;color:#4d3772}
+body.exam-mode.hsk2-theme .hsk-topbar{background:#30204b;border-bottom-color:#d9b3ea}
+body.exam-mode.hsk2-theme .hsk-paper-title span{color:#e4c9f1}
+body.exam-mode.hsk2-theme .hsk-progress-copy b{color:#e4c9f1}
+body.exam-mode.hsk2-theme .hsk-workspace{border-color:#e1d9e9}
+body.exam-mode.hsk2-theme .paper-section-link>div:first-child>span{color:#7650a6}
+body.exam-mode.hsk2-theme .question-palette button.current{background:#60418c;border-color:#60418c;color:#fff}
+body.exam-mode.hsk2-theme .question-palette button.answered:not(.current){background:#e4c9f1;border-color:#caa6dd;color:#30204b}
+body.exam-mode.hsk2-theme .audio-play{background:#e4c9f1;color:#30204b}
+body.exam-mode.hsk2-theme .hsk-choices input:checked~.choice-letter{background:#60418c;color:#fff}
+body.exam-mode.hsk2-theme .hsk-choices label:has(input:checked){border-color:#7650a6;box-shadow:inset 0 0 0 1px #7650a6}
+body.exam-mode.hsk2-theme .exam-passage{border-left-color:#7650a6}
+body.hsk2-theme .result-hero{border-top-color:#8961b3}

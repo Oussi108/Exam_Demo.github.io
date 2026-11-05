@@ -1,0 +1,90 @@
+/* GetHSK learner controls. Feedback stays local to the control being used. */
+:root {
+  --ui-press: 120ms;
+  --ui-enter: 200ms;
+  --ui-out: cubic-bezier(.23, 1, .32, 1);
+  --ui-focus: #28684e;
+}
+
+.sr { --ui-focus: var(--accent); }
+
+.button {
+  min-block-size: 44px;
+  border-radius: 10px;
+  box-shadow: none;
+  letter-spacing: normal;
+  transition: background-color var(--ui-press) var(--ui-out),
+    border-color var(--ui-press) var(--ui-out), color var(--ui-press) var(--ui-out);
+}
+
+.button.primary,
+.button.primary:hover {
+  background: #245c44;
+  border-color: #245c44;
+  box-shadow: none;
+}
+
+.button:is(:hover, :active), .word-card:hover {
+  transform: none;
+}
+
+.button:is(:hover, :active) { box-shadow: none; }
+.button:active:not(:disabled) { filter: brightness(.94); }
+.button:disabled { cursor: not-allowed; }
+
+@media (hover: hover) and (pointer: fine) {
+  .button.primary:not(:disabled):hover {
+    background: #194a35;
+    border-color: #194a35;
+  }
+}
+
+.word-card {
+  transition: border-color var(--ui-press) var(--ui-out),
+    background-color var(--ui-press) var(--ui-out);
+}
+
+/* Repeated answers and step navigation respond without moving the target. */
+.visual-choice-card,
+.translation-options span {
+  transition: none;
+}
+
+.visual-choice-card:hover,
+.unit-lesson-row:hover {
+  transform: none;
+}
+
+:is(.visual-choice-card, .translation-options label, .hsk-choices label, .h3-learner-option):has(input:focus-visible) {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 3px;
+}
+
+.unit-lesson-row {
+  transition: border-color var(--ui-press) var(--ui-out);
+}
+
+:is(.app-shell, .sr) :where(a[href], button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 3px;
+}
+
+.app-topbar :is(.script-toggle, .lang-toggle, .pinyin-toggle, .tone-toggle, .topbar-login, .sidebar-visibility-toggle) {
+  transition: background-color var(--ui-press) var(--ui-out),
+    border-color var(--ui-press) var(--ui-out), color var(--ui-press) var(--ui-out);
+}
+
+/* Comfortable targets without growing the header's inline footprint. */
+@media (pointer: coarse) {
+  .app-topbar :is(.script-toggle, .lang-toggle, .pinyin-toggle, .tone-toggle, .topbar-login) {
+    min-block-size: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-card input:not([type="hidden"]) { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ui-press: 0ms; --ui-enter: 0ms; }
+}
