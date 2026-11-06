@@ -52,11 +52,26 @@ button:disabled{cursor:not-allowed;opacity:.55}
 .demo-pinyin{display:none;color:#6b478c;font-size:.8em;line-height:1.6}
 .with-pinyin .demo-pinyin{display:block}
 .demo-lookup{display:inline;border:0;border-bottom:1px dotted #7650a6;padding:0;color:inherit;background:none;font:inherit;cursor:pointer}
-.demo-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-block:12px}
-.demo-board figure{margin:0;border:1px solid var(--line);background:white;border-radius:8px;overflow:hidden}
+.demo-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0;margin:12px 0;padding:0;border:0}
+.demo-board :is(figure,.demo-picture){position:relative;margin:0;border:1px solid var(--line);background:white;border-radius:8px;overflow:hidden}
 .demo-board img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
-.demo-board figcaption{padding:5px 8px;font-size:13px}
+.demo-board :is(figcaption,.demo-picture-caption){display:block;padding:5px 8px;font-size:13px}
 .demo-board .sample{background:#f1edf6}
+.demo-picture input{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}
+.demo-picture:has(input:enabled){cursor:pointer}
+.demo-picture:has(input:disabled){cursor:default}
+.demo-picture.used img{opacity:.6}
+.demo-picture-selected{display:none}
+.demo-picture:has(input:checked){border-color:#60418c;box-shadow:0 0 0 2px #60418c}
+.demo-picture:has(input:checked) .demo-picture-caption{background:#60418c;color:white}
+.demo-picture:has(input:checked) .demo-picture-selected{display:inline}
+.demo-picture:has(input:focus-visible){outline:2px solid #30204b;outline-offset:3px}
+@media(hover:hover) and (pointer:fine){
+  .demo-picture:has(input:enabled):hover{border-color:#60418c}
+}
+.demo-reading-bank{margin-block:14px;padding:12px 15px;border:1px solid var(--line);border-radius:8px;background:#f6f2fa}
+.demo-reading-bank p{margin:.4em 0 0}
+.demo-example{white-space:pre-line}
 .demo-tiles{display:flex;gap:8px;flex-wrap:wrap;margin-block:12px}
 .demo-tiles button{font-size:17px}
 .demo-order{min-height:54px;background:#f6f2fa;padding:10px;border-radius:8px}

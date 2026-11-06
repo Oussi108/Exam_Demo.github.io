@@ -4,9 +4,10 @@ GETHSK · HSK 2.0 LEVEL 3 EXAM DEMO
    inside the ZIP, and keep the assets folder beside it.
 2. Open index.html in a recent browser. No sign-in, installation, internet,
    or GetHSK server is needed.
-3. Choose one of the five papers. Timed mode has an 85-minute countdown and
-   one playback of each listening recording. Learning mode offers unlimited
-   replays, slower audio, transcripts, pinyin, and answer checks.
+3. Choose one of four GetHSK Real papers. Timed mode has an 85-minute
+   countdown and one playback of each listening recording at normal speed.
+   Learning and review support 1×, 0.75×, 0.6×, and 0.5× playback.
+   Learning mode also offers transcripts, pinyin, and answer checks.
 4. Finish for a raw practice score and review. To send feedback, open
    Give feedback, write your notes, and download the text file. Send it back
    to the person who shared the demo. If the download is blocked, copy the
@@ -22,6 +23,8 @@ keep that tab open until you finish. The timed countdown does not pause when
 you leave the player. Retaking replaces the saved result for that paper and
 mode after confirmation.
 
-These original GetHSK draft practice papers are provided for feedback.
-They are not official HSK papers and results are not official HSK scores.
-Recordings and answer keys are bundled for offline use and review.
+These reviewer editions use GetHSK Real Papers 01–04, with repeated items
+replaced and reading answer banks adapted to the HSK 2.0 Level 3 sample.
+The short-dialogue part still uses existing GetHSK recordings that can run
+longer than the sample. Timed mode uses a whole-paper countdown and starts
+recordings when clicked. The displayed score is a raw practice score.

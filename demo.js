@@ -6,7 +6,7 @@
     return;
   }
   const {papers, words} = window.DEMO;
-  const storageKey = "gethsk-level3-exam-demo-v1";
+  const storageKey = "gethsk-level3-real-demo-v2";
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c =>
     ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const label = i => String.fromCharCode(65 + i);
@@ -21,6 +21,7 @@
   catch { persistent = false; }
   let paper, run, mode, items, index, audio, playing = false, checked = false;
   const settings = {help:true, pinyin:false, speed:1};
+  const playbackSpeeds = [1, 0.75, 0.6, 0.5];
   const key = () => paper.id + "-" + mode;
   const finished = () => !!run?.finished;
   const timed = () => mode === "timed";
@@ -67,17 +68,17 @@
       <div class="demo-brand"><img src="assets/dragon.png" alt="">GetHSK</div>
       <header class="demo-hero"><span class="demo-eyebrow">Reviewer demo · HSK 2.0 · Level 3</span>
       <h1>Choose a practice paper</h1>
-      <p>Five original practice papers, each with 40 listening, 30 reading, and 10 writing questions. Try a timed paper or take your time in learning mode.</p>
-      <p class="demo-note">Drafts for feedback. Scores are practice results. These are not official HSK papers.</p></header>
+      <p>Four GetHSK Real practice papers, each with 40 listening, 30 reading, and 10 writing questions.</p>
+      <p class="demo-note">Reviewer editions of Papers 01–04, with replacement questions and shared answer banks. Scores are for practice.</p></header>
       <section class="demo-grid" aria-label="Practice papers">${papers.map(p => `<article class="demo-card">
-        <div><h2>Paper ${pad(p.id)}</h2><p>80 questions · ${p.minutes} min timed</p></div>
+        <div><h2>GetHSK Real · Paper ${pad(p.id)}</h2><p>80 questions · ${p.minutes} min timed</p></div>
         <div class="demo-actions">${["timed","learning"].map(m => {
           const s = saved[p.id + "-" + m];
           const text = s?.finished ? "Review " + m : s ? "Resume " + m : m === "timed" ? "Start timed" : "Learning mode";
           return bt(text, "start", `data-paper="${p.id}" data-mode="${m}" ${m === 'timed' ? 'data-primary' : ''}`);
         }).join("")}</div></article>`).join("")}</section>
       <details class="demo-help"><summary>How the demo works</summary>
-        <p>Timed mode counts down from the moment you start and limits each listening question to one recording. The timer continues if you leave the paper. Learning mode has no deadline, and offers replay, slower audio, transcripts, pinyin, word meanings, and answer checks.</p>
+        <p>Timed mode starts the countdown immediately and gives one playback per listening question at normal speed. The timer continues if you leave the paper. Learning mode offers replay at 1×, 0.75×, 0.6×, or 0.5×, along with transcripts, pinyin, word meanings, and answer checks. The same speeds are available in answer review.</p>
         <p>Answers and flags are saved in this browser when local storage is available. Use the same extracted folder and browser to resume. If opening the file directly disables storage in your browser, keep the tab open.</p>
         <p>No account or internet is needed. Nothing is sent to GetHSK. Use the feedback form below to save notes and send them yourself.</p>
       </details>${feedbackBox()}</main>`;
@@ -144,19 +145,58 @@
       <div class="audio-wave" aria-hidden="true">${"<i></i>".repeat(12)}</div>
       <audio preload="none" src="${esc(q.audio)}"></audio></div>`;
   }
+  function usedByAnotherQuestion(q, option) {
+    return items.some(other => other.n !== q.n && answers()[other.n] === option &&
+      ((q.board && other.board === q.board) || (q.group && other.group === q.group)));
+  }
+  function pictureBoard(q) {
+    const pictures = paper.boards[q.board];
+    return `<fieldset class="demo-board" aria-label="Choose a picture">
+      ${pictures.map((picture, option) => {
+        const image = `<img src="${esc(picture.image)}" alt="${esc(picture.alt)}">`;
+        if (picture.label === "F") {
+          return `<figure class="sample">${image}<figcaption><b>F</b> · sample</figcaption></figure>`;
+        }
+        const used = usedByAnotherQuestion(q, option);
+        return `<label class="demo-picture${used ? " used" : ""}">
+          <input type="radio" name="answer" value="${option}"
+            aria-label="Picture ${picture.label}: ${esc(picture.alt)}"
+            ${answers()[q.n] === option ? "checked" : ""}
+            ${finished() || used ? "disabled" : ""}>
+          ${image}
+          <span class="demo-picture-caption"><b>${picture.label}</b>
+            ${used ? "<small>Already used</small>" : '<small class="demo-picture-selected">Selected</small>'}
+          </span>
+        </label>`;
+      }).join("")}
+    </fieldset>
+    <p class="demo-note">Select a picture for this question. Use A–E once each.${pictures.length === 6 ? " F is a sample." : ""}</p>`;
+  }
   function optionList(q) {
     const a = answers()[q.n];
-    const selectedInBank = i => items.some(x =>
-      x.n !== q.n && ((q.board && x.board === q.board) || (q.group && x.group === q.group)) && answers()[x.n] === i);
+    const example = paper.examples[q.group];
     return `<fieldset class="hsk-choices" style="border:0;padding:0" aria-label="Answer choices">
       ${q.options.map((o,i) => {
-        const used = selectedInBank(i);
-        return `<label><input type="radio" name="answer" value="${i}" ${a===i?'checked':''} ${finished() || used ? 'disabled' : ''}>
-        <span class="choice-letter">${label(i)}</span><span>${q.type === "board" ? "Picture " + o.text :
-          o.image ? `<img src="${esc(o.image)}" alt="${esc(o.alt || 'Picture ' + label(i))}">` : chinese(o, false)}${used ? '<small> · already used</small>' : ''}</span></label>`;
+        const used = usedByAnotherQuestion(q, i);
+        const sample = example?.key === i;
+        return `<label><input type="radio" name="answer" value="${i}" ${a===i?'checked':''} ${finished() || used || sample ? 'disabled' : ''}>
+        <span class="choice-letter">${label(i)}</span><span>${
+          o.image ? `<img src="${esc(o.image)}" alt="${esc(o.alt || 'Picture ' + label(i))}">` : chinese(o, false)}${sample ? '<small> · example</small>' : used ? '<small> · already used</small>' : ''}</span></label>`;
       }).join("")}</fieldset>`;
   }
+  function readingBank(q) {
+    if (!q.group) return "";
+    const example = paper.examples[q.group];
+    const start = Number(q.group);
+    return `<section class="demo-reading-bank" aria-label="Shared answer bank">
+      <strong>Answer bank · Questions ${start}–${start+4}</strong>
+      <p>Use each answer once in this group.</p>
+      ${example ? `<p class="demo-example">Example · <span lang="zh-Hans">${esc(example.prompt.replace("____", q.options[example.key].text))}</span>
+        <span>→ ${label(example.key)} · ${esc(q.options[example.key].text)}</span></p>` : ""}
+    </section>`;
+  }
   function inputs(q) {
+    if (q.board) return pictureBoard(q);
     if (q.type === "text") return `<label for="character">Enter the missing character</label>
       <input id="character" class="demo-input" lang="zh-Hans" autocomplete="off" maxlength="16" value="${esc(answers()[q.n] || "")}" ${finished() ? 'readonly' : ''}>`;
     if (q.type !== "order") return optionList(q);
@@ -178,19 +218,20 @@
     stopAudio();
     const q = items[index];
     const review = finished();
-    const board = q.board ? `<div class="demo-board">${paper.boards[q.board].map(o =>
-      `<figure class="${o.label === 'F' ? 'sample' : ''}"><img src="${esc(o.image)}" alt="${esc(o.alt)}"><figcaption><b>${o.label}</b>${o.label === "F" ? " · sample" : ""}</figcaption></figure>`).join("")}</div>` : "";
+    const spokenQuestion = ["L3", "L4"].includes(q.part.code);
+    const showPrompt = !spokenQuestion || assisted() || review;
     document.body.className = "exam-mode hsk2-theme" + (settings.pinyin && (assisted() || review) ? " with-pinyin" : "");
     root.innerHTML = `<main class="hsk-shell demo-exam">
       <header class="hsk-topbar">${bt("← Papers", "home")}
-        <div class="hsk-paper-title"><span>HSK 2.0 · LEVEL 3 · ${review?"REVIEW":timed()?"TIMED":"LEARNING"}</span><strong>Practice Paper ${pad(paper.id)}</strong></div>
+        <div class="hsk-paper-title"><span>HSK 2.0 · LEVEL 3 · ${review?"REVIEW":timed()?"TIMED":"LEARNING"}</span><strong>GetHSK Real · Paper ${pad(paper.id)}</strong></div>
         <div class="hsk-progress-copy"><b id="answered-count">${count()}</b>/80 answered</div>
         <div class="hsk-timer" ${!timed() || review ? "hidden" : ""}><small>TIME REMAINING</small><strong id="timer"></strong></div>
       </header>
       <div class="demo-tools">
         ${!timed() && !review ? `<label><input type="checkbox" id="help" ${settings.help?"checked":""}> Learning help</label>` : ""}
         ${!timed() || review ? `<label><input type="checkbox" id="pinyin" ${settings.pinyin?"checked":""} ${!(assisted()||review)?"disabled":""}> Show pinyin</label>
-          <label>Audio speed <select id="speed"><option value="1">Normal</option><option value=".75" ${settings.speed===.75?"selected":""}>Slow</option></select></label>` : ""}
+          <label>Audio speed <select id="speed">${playbackSpeeds.map(speed =>
+            `<option value="${speed}" ${settings.speed===speed?"selected":""}>${speed===1?"1× · Normal":speed+"×"}</option>`).join("")}</select></label>` : ""}
         <span id="save-status" class="demo-note"></span>
         ${bt(review?"Results":"Finish paper",review?"result":"confirm")}
       </div>
@@ -201,11 +242,11 @@
           ${player(q)}
           ${q.transcript.text && (assisted() || review) ? `<details class="demo-help"><summary>Listening script</summary>${chinese(q.transcript)}</details>` : ""}
           ${q.passage.text ? `<div class="exam-passage">${chinese(q.passage)}</div>` : ""}
-          <h1 id="question-title" tabindex="-1" lang="zh-Hans">${esc(q.prompt.text)}</h1>
+          <h1 id="question-title" tabindex="-1" ${showPrompt ? 'lang="zh-Hans"' : ''}>${showPrompt ? esc(q.prompt.text) : "Listen and choose the answer."}</h1>
           ${(assisted()||review) && q.prompt.pinyin ? `<small class="demo-pinyin">${esc(q.prompt.pinyin)}</small>` : ""}
           ${chinese(q.statement)}${chinese(q.left)}
           ${q.image ? `<img class="demo-stimulus" src="${esc(q.image)}" alt="${esc(q.alt)}">` : ""}
-          ${board}${q.board ? '<p class="demo-note">Match A–E once each on this board. F is a sample.</p>' : ""}
+          ${readingBank(q)}
           ${inputs(q)}${review || checked ? showFeedback(q) : ""}
         </article>
         <div class="hsk-controls demo-actions">
