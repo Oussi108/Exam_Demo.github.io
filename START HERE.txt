@@ -8,6 +8,9 @@ GETHSK · HSK 2.0 LEVEL 3 EXAM DEMO
    countdown and one playback of each listening recording at normal speed.
    Learning and review support 1×, 0.75×, 0.6×, and 0.5× playback.
    Learning mode also offers transcripts, pinyin, and answer checks.
+   Tap the picture itself to answer questions 1–10. The picture bank
+   changes at question 6. True/false starts at question 11.
+   In Writing Part 1, tap the four to six chunks in sentence order.
 4. Finish for a raw practice score and review. To send feedback, open
    Give feedback, write your notes, and download the text file. Send it back
    to the person who shared the demo. If the download is blocked, copy the

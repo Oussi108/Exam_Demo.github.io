@@ -6,7 +6,7 @@
     return;
   }
   const {papers, words} = window.DEMO;
-  const storageKey = "gethsk-level3-real-demo-v2";
+  const storageKey = "gethsk-level3-real-demo-v3";
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c =>
     ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const label = i => String.fromCharCode(65 + i);
@@ -162,7 +162,9 @@
   }
   function pictureBoard(q) {
     const pictures = paper.boards[q.board];
-    return `<fieldset class="demo-board" aria-label="Choose a picture">
+    const first = Number(q.board);
+    return `<fieldset class="demo-board">
+      <legend>Choose a picture · Questions ${first}–${first + 4}</legend>
       ${pictures.map((picture, option) => {
         const image = `<img src="${esc(picture.image)}" alt="${esc(picture.alt)}">`;
         if (picture.label === "F") {
@@ -181,7 +183,7 @@
         </label>`;
       }).join("")}
     </fieldset>
-    <p class="demo-note">Select a picture for this question. Use A–E once each.${pictures.length === 6 ? " F is a sample." : ""}</p>`;
+    <p class="demo-note">Tap a picture to select it. Use A–E once each.${pictures.length === 6 ? " F is a sample." : ""}</p>`;
   }
   function optionList(q) {
     const a = answers()[q.n];
@@ -222,7 +224,7 @@
     const ok = correct(q);
     return `<div class="demo-review" data-correct="${ok}" role="status">
       <strong>${!answered(q) ? "Unanswered" : ok ? "Correct" : "Try reviewing this item"}</strong>
-      <p>Answer: <span lang="zh-Hans">${esc(model(q))}</span></p>
+      <p>${q.type === "order" ? "Example answer" : "Answer"}: <span lang="zh-Hans">${esc(model(q))}</span></p>
       ${q.explanation ? `<p>${esc(q.explanation)}</p>` : ""}</div>`;
   }
   function render({focus = false} = {}) {
