@@ -64,19 +64,30 @@
   function home() {
     stopAudio(); run = null;
     document.body.className = "hsk2-theme";
+    const hasAnySaved = Object.keys(saved).length > 0;
     root.innerHTML = `<main class="demo-catalogue">
       <div class="demo-brand"><img src="assets/dragon.png" alt="">GetHSK</div>
       <header class="demo-hero"><span class="demo-eyebrow">Reviewer demo · HSK 2.0 · Level 3</span>
       <h1>Choose a practice paper</h1>
       <p>Four GetHSK Real practice papers, each with 40 listening, 30 reading, and 10 writing questions.</p>
       <p class="demo-note">Reviewer editions of Papers 01–04, with replacement questions and shared answer banks. Scores are for practice.</p></header>
-      <section class="demo-grid" aria-label="Practice papers">${papers.map(p => `<article class="demo-card">
-        <div><h2>GetHSK Real · Paper ${pad(p.id)}</h2><p>80 questions · ${p.minutes} min timed</p></div>
-        <div class="demo-actions">${["timed","learning"].map(m => {
-          const s = saved[p.id + "-" + m];
-          const text = s?.finished ? "Review " + m : s ? "Resume " + m : m === "timed" ? "Start timed" : "Learning mode";
-          return bt(text, "start", `data-paper="${p.id}" data-mode="${m}" ${m === 'timed' ? 'data-primary' : ''}`);
-        }).join("")}</div></article>`).join("")}</section>
+      <section class="demo-grid" aria-label="Practice papers">${papers.map(p => {
+        const sTimed = saved[p.id + "-timed"];
+        const sLearning = saved[p.id + "-learning"];
+        const hasPaperSaved = !!(sTimed || sLearning);
+        return `<article class="demo-card">
+          <div>
+            <h2>GetHSK Real · Paper ${pad(p.id)}</h2>
+            <p>80 questions · ${p.minutes} min timed</p>
+            ${hasPaperSaved ? `<div class="demo-card-status">${sTimed ? `<span class="demo-tag">${sTimed.finished ? "Timed: Finished" : "Timed: In progress"}</span>` : ""}${sLearning ? `<span class="demo-tag">${sLearning.finished ? "Learning: Finished" : "Learning: In progress"}</span>` : ""}</div>` : ""}
+          </div>
+          <div class="demo-actions">${["timed","learning"].map(m => {
+            const s = saved[p.id + "-" + m];
+            const text = s?.finished ? "Review " + m : s ? "Resume " + m : m === "timed" ? "Start timed" : "Learning mode";
+            return bt(text, "start", `data-paper="${p.id}" data-mode="${m}" ${m === 'timed' ? 'data-primary' : ''}`);
+          }).join("")}${hasPaperSaved ? bt("Clear marks", "clear-paper-prompt", `data-paper="${p.id}" title="Clear saved answers and start fresh"`) : ""}</div></article>`;
+      }).join("")}</section>
+      ${hasAnySaved ? `<div class="demo-reset-bar"><span class="demo-note">Practice progress is saved in this browser.</span>${bt("Clear all saved marks", "clear-all-prompt", "title='Reset all practice papers and scores'")}</div>` : ""}
       <details class="demo-help"><summary>How the demo works</summary>
         <p>Timed mode starts the countdown immediately and gives one playback per listening question at normal speed. The timer continues if you leave the paper. Learning mode offers replay at 1×, 0.75×, 0.6×, or 0.5×, along with transcripts, pinyin, word meanings, and answer checks. The same speeds are available in answer review.</p>
         <p>Answers and flags are saved in this browser when local storage is available. Use the same extracted folder and browser to resume. If opening the file directly disables storage in your browser, keep the tab open.</p>
@@ -233,6 +244,7 @@
           <label>Audio speed <select id="speed">${playbackSpeeds.map(speed =>
             `<option value="${speed}" ${settings.speed===speed?"selected":""}>${speed===1?"1× · Normal":speed+"×"}</option>`).join("")}</select></label>` : ""}
         <span id="save-status" class="demo-note"></span>
+        ${bt(review ? "Retake (clear marks)" : "Restart paper", "retake-in-exam", `title="${review ? 'Clear marks and restart this paper' : 'Clear all answers and restart from Question 1'}"`)}
         ${bt(review?"Results":"Finish paper",review?"result":"confirm")}
       </div>
       <div class="hsk-layout"><aside class="hsk-sidebar" aria-label="Question navigator">${navigator()}</aside>
@@ -314,7 +326,12 @@
       <header class="demo-hero"><span class="demo-eyebrow">Paper ${pad(paper.id)} · ${cap(mode)} mode</span>
       <h1>${total} / 80 correct</h1><p>${count()} answered · ${80-count()} unanswered${run.expired?" · Time expired":""}</p>
       <p class="demo-note">Raw practice score. Writing checks the supplied answers and accepted alternatives; a valid unexpected answer may need human review.</p>
-      <div class="demo-actions">${bt("Review answers","review","data-primary")}${bt("Choose a paper","home")}${bt("Retake","retake")}</div></header>
+      <div class="demo-actions">
+        ${bt("Review answers","review","data-primary")}
+        ${bt("Retake (clear marks)","retake","title='Clear marks and restart this paper from question 1'")}
+        ${bt("Clear & choose paper","clear-current-home","title='Clear marks for this paper and return to catalogue'")}
+        ${bt("Choose a paper","home")}
+      </div></header>
       <div class="demo-grid demo-result">${breakdown}</div>${feedbackBox()}</main>`;
     window.scrollTo(0,0);
   }
@@ -369,6 +386,26 @@
     if (act === "home") return home();
     if (act === "start") return start(Number(button.dataset.paper), button.dataset.mode);
     if (act === "feedback") return downloadFeedback();
+    if (act === "clear-paper-prompt") {
+      const pid = Number(button.dataset.paper);
+      if (window.confirm(`Clear all saved marks and answers for Paper ${pad(pid)} so you can take it again from the beginning?`)) {
+        delete saved[pid + "-timed"];
+        delete saved[pid + "-learning"];
+        try { localStorage.setItem(storageKey, JSON.stringify(saved)); }
+        catch { persistent = false; }
+        return home();
+      }
+      return;
+    }
+    if (act === "clear-all-prompt") {
+      if (window.confirm("Clear all saved marks and results across all papers? All exam progress will be reset.")) {
+        saved = {};
+        try { localStorage.removeItem(storageKey); }
+        catch { persistent = false; }
+        return home();
+      }
+      return;
+    }
     if (!run || !allowed()) return run && finish(true);
     const q = items[index];
     switch (act) {
@@ -379,7 +416,18 @@
       case "result": return result();
       case "review": return goto(0);
       case "retake":
-        if (window.confirm("Replace the saved result with a new attempt in this mode?")) start(paper.id, mode, true);
+      case "retake-in-exam":
+        if (window.confirm(`Clear all marks and start a new attempt for Paper ${pad(paper.id)} (${cap(mode)} mode)?`)) {
+          start(paper.id, mode, true);
+        }
+        return;
+      case "clear-current-home":
+        if (window.confirm(`Clear your saved marks for Paper ${pad(paper.id)} (${cap(mode)} mode) and return to paper selection?`)) {
+          delete saved[key()];
+          try { localStorage.setItem(storageKey, JSON.stringify(saved)); }
+          catch { persistent = false; }
+          return home();
+        }
         return;
       case "confirm": {
         const dialog = document.getElementById("confirm-dialog");
